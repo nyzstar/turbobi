@@ -1,0 +1,26 @@
+/* bar_chart */
+.bar_chart rect{
+	fill:steelblue;
+}
+
+.bar_chart rect:hover{
+	fill:blue;
+}
+
+.bar_chart text{
+	fill: white;
+	font: 10px sans-serif;
+	text-anchor: end;
+}
+
+/* pie_chart */
+.pie_chart .slice text {
+	font-size: 16pt;
+	font-family: Arial;
+} 
+
+.pie_chart .slice:hover{
+	fill: blue;
+}
+
+
