@@ -1,3 +1,4 @@
 *.csv
 *.db
+*.pyc
 .DS_Store
