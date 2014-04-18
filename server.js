@@ -48,7 +48,7 @@ var server = http.createServer();
 server.on('request', function (req, res){
 	var filePath = false;
 	if(req.url == '/'){
-		filePath = 'dashboard.html';
+		filePath = 'dashboard2.html';
 		console.log(filePath);
 	}else{
 		filePath = req.url;
