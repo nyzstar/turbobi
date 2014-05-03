@@ -4,7 +4,7 @@ import java.util.{Date}
 
 import play.api.db._
 import play.api.Play.current
-
+import play.api.db._
 import anorm._
 import anorm.SqlParser._
 
@@ -75,14 +75,12 @@ object Computer {
           select * from computer 
           left join company on computer.company_id = company.id
           where computer.name like {filter}
-          order by {orderBy} nulls last
           limit {pageSize} offset {offset}
         """
       ).on(
         'pageSize -> pageSize, 
         'offset -> offest,
-        'filter -> filter,
-        'orderBy -> orderBy
+        'filter -> filter
       ).as(Computer.withCompany *)
 
       val totalRows = SQL(
@@ -134,8 +132,7 @@ object Computer {
     DB.withConnection { implicit connection =>
       SQL(
         """
-          insert into computer values (
-            (select next value for computer_seq), 
+          insert into computer (name,introduced,discontinued,company_id) values ( 
             {name}, {introduced}, {discontinued}, {company_id}
           )
         """
