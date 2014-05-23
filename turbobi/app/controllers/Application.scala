@@ -109,5 +109,26 @@ object Application extends Controller {
     Home.flashing("success" -> "Computer has been deleted")
   }
 
+
+  def upload = Action(parse.multipartFormData) { request =>
+    request.body.file("csvfile").map { csvfile =>
+      import java.io.File
+      val filename = csvfile.filename
+      val contentType = csvfile.contentType
+      csvfile.ref.moveTo(new File(s"/tmp/picture/$filename"))
+	  Logger.debug(s"The file is $filename")
+      Ok("File uploaded")
+    }.getOrElse {
+      Redirect(routes.Application.index).flashing(
+        "error" -> "Missing file")
+    }
+  }
+  /**
+  * Handle CSV upload.
+  */
+  // def uploadCSV = Action {
+  // 		  
+  // }
+
 }
             

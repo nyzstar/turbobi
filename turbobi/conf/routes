@@ -22,3 +22,6 @@ POST    /computers/:id/delete       controllers.Application.delete(id:Long)
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
+# file upload.
+POST  /          controllers.Application.upload()
+

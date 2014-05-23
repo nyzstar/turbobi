@@ -21,5 +21,15 @@
             @content
         </section>
         
+		@helper.form(action = routes.Application.upload, 'enctype -> "multipart/form-data") {
+    
+		    <input type="file" name="csvfile">
+    
+		    <p>
+		        <input type="submit">
+		    </p>
+    
+		}
+		
     </body>
 </html>
