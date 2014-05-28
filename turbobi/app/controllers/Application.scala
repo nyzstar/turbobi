@@ -11,6 +11,8 @@ import anorm._
 import views._
 import models._
 
+import java.io.File
+
 /**
  * Manage a database of computers
  */
@@ -109,26 +111,47 @@ object Application extends Controller {
     Home.flashing("success" -> "Computer has been deleted")
   }
 
-
+  /**
+  * Handle CSV upload.
+  */
   def upload = Action(parse.multipartFormData) { request =>
     request.body.file("csvfile").map { csvfile =>
-      import java.io.File
+      
       val filename = csvfile.filename
       val contentType = csvfile.contentType
-      csvfile.ref.moveTo(new File(s"/tmp/picture/$filename"))
-	  Logger.debug(s"The file is $filename")
+      csvfile.ref.moveTo(new File(s"/tmp/picture/$filename"), true)
+      //Logger.debug(s"The file is $filename")
+      processCSV(filename)
       Ok("File uploaded")
+
     }.getOrElse {
       Redirect(routes.Application.index).flashing(
         "error" -> "Missing file")
     }
   }
-  /**
-  * Handle CSV upload.
-  */
-  // def uploadCSV = Action {
-  // 		  
-  // }
+
+  def processCSV(filename: String) = {
+      import com.github.tototoshi.csv._
+
+      val reader = CSVReader.open(new File(s"/tmp/picture/$filename"))
+  		val it = reader.iterator
+
+      val fields = it.next
+
+      val newFields = fields.map(field => field.replace(' ', '_').replace('\'','_').replace("(","_").replace(")",""))
+      
+      Logger.debug(newFields.mkString(" ")) 
+      
+      TableUtilities.createTable("utable_" + filename.replace(".","_"), newFields)
+
+      while(it.hasNext){
+        val values = it.next;
+        val data = values.map(value => "\""+value+"\"")
+        Logger.debug(data.mkString(","))
+        TableUtilities.insertUserData("utable_" + filename.replace(".","_"), data)
+      }
+      reader.close
+  } 
 
 }
             

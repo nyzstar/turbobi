@@ -4,9 +4,15 @@ import java.util.{Date}
 
 import play.api.db._
 import play.api.Play.current
-import play.api.db._
 import anorm._
 import anorm.SqlParser._
+
+import views._
+import models._
+import play.api._
+import play.api.mvc._
+import play.api.data._
+import play.api.data.Forms._
 
 import scala.language.postfixOps
 
@@ -177,5 +183,30 @@ object Company {
     SQL("select * from company order by name").as(Company.simple *).map(c => c.id.toString -> c.name)
   }
   
+}
+
+
+object TableUtilities {
+
+  def createTable(tableName: String, fields: Seq[String]) = {
+
+    val state = fields.mkString(" varchar(255), ")
+
+    val state_str = s"create table $tableName ($state varchar(255))"
+
+    Logger.debug(state_str) 
+    DB.withConnection { implicit connection =>
+      //SQL("create table {name} ({state} varchar(255))").on('name -> name, 'state -> state).executeUpdate()
+      SQL(state_str).executeUpdate()
+    }
+  }
+
+  def insertUserData(tableName: String, data: Seq[String]) = {
+    val values = data.mkString(",")
+    DB.withConnection {implicit connection =>
+      SQL(s"insert into $tableName values($values)").executeUpdate()
+    }
+  }
+
 }
 
