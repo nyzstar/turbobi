@@ -5,6 +5,7 @@ import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
 import play.api.db._
+import com.github.tototoshi.csv._
 
 import anorm._
 
@@ -134,7 +135,7 @@ object Application extends Controller {
       import com.github.tototoshi.csv._
 
       val reader = CSVReader.open(new File(s"/tmp/picture/$filename"))
-  		val it = reader.iterator
+      val it = reader.iterator
 
       val fields = it.next
 
@@ -152,6 +153,5 @@ object Application extends Controller {
       }
       reader.close
   } 
-
 }
             
