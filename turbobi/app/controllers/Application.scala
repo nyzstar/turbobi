@@ -5,6 +5,7 @@ import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
 import play.api.db._
+import com.github.tototoshi.csv._
 
 import anorm._
 
@@ -115,14 +116,20 @@ object Application extends Controller {
       import java.io.File
       val filename = csvfile.filename
       val contentType = csvfile.contentType
-      csvfile.ref.moveTo(new File(s"/tmp/picture/$filename"))
-	  Logger.debug(s"The file is $filename")
+	  var dstfile = new File(s"/tmp/picture/$filename")
+      csvfile.ref.moveTo(dstfile)
+	  //initialize the csv reader
+	  val reader = CSVReader.open(dstfile)
+	  val it = reader.iterator
+	  Logger.debug(it.next.toString)
+	  //Logger.debug(s"The file is $filename")
       Ok("File uploaded")
     }.getOrElse {
       Redirect(routes.Application.index).flashing(
         "error" -> "Missing file")
     }
   }
+  
   /**
   * Handle CSV upload.
   */

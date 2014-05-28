@@ -22,7 +22,7 @@ create table PROJECT(
 	CONSTRAINT PK_PROJECT PRIMARY KEY (PROJECT_ID)
 );
 
-create table SHEET(
+create table TABLELIST(
 	SHEET_ID		INT NOT NULL AUTO_INCREMENT,
 	SHEET_NAME		VARCHAR(255),
 	DATASOURCE_ID	INT,
@@ -73,7 +73,7 @@ drop table if exists USER;
 
 drop table if exists PROJECT;
 
-drop table if exists SHEET;
+drop table if exists TABLELIST;
 
 drop table if exists DATASOURCE;
 
