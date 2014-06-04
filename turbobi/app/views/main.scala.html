@@ -31,5 +31,16 @@
     
 		}
 		
+        @helper.form(action = routes.Application.addSQLConnector) {
+            <input type="text" name="username">
+            <input type="text" name="password">
+            <input type="text" name="url">
+            <input type="text" name="driver">
+            <p>
+                <input type="submit">
+            </p>
+        }
+
+
     </body>
 </html>
